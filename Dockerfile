@@ -3,14 +3,31 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-
+COPY prisma ./prisma/
 RUN npm install
 
 COPY . .
+RUN npm run build
+
+FROM node:18-alpine AS production
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/tsconfig.json ./
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+RUN chown -R appuser:appgroup /app
+
+USER appuser
+
+CMD ["npm", "run", "start:prod"]
