@@ -1,14 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import * as argon2 from 'argon2';
+import { AddBalanceToUserDto } from './dtos/add-balance.dto';
 
 @Injectable()
 export class UserService {
+
+    private readonly logger = new Logger(UserService.name);
+
     constructor(private prisma: PrismaService) { }
 
     async create(dto: CreateUserDto) {
         const hashedPassword = await argon2.hash(dto.password);
+
+        this.logger.log('Usuário registrado com sucesso!!.');
+
         return this.prisma.user.create({
             data: {
                 name: dto.name,
@@ -33,4 +40,12 @@ export class UserService {
         const { password, ...rest } = user;
         return rest;
     }
+
+    async addBalance(dto: AddBalanceToUserDto) {
+        return this.prisma.user.update({
+            where: { id: dto.userId },
+            data: { balance: { increment: dto.value } },
+        });
+    }
+
 }

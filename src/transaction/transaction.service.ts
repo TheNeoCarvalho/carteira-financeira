@@ -3,12 +3,16 @@ import {
     BadRequestException,
     NotFoundException,
     ForbiddenException,
+    Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
 
 @Injectable()
 export class TransactionService {
+
+    private readonly logger = new Logger(TransactionService.name);
+
     constructor(private prisma: PrismaService) { }
 
     async transfer(senderId: string, dto: CreateTransactionDto) {
@@ -26,6 +30,8 @@ export class TransactionService {
         if (Number(sender.balance) < dto.amount) {
             throw new ForbiddenException('Saldo insuficiente');
         }
+
+        this.logger.log('Transação registrada com sucesso!!.');
 
         return this.prisma.$transaction(async (tx) => {
 
@@ -62,6 +68,8 @@ export class TransactionService {
         if (transaction.senderId !== requesterId)
             throw new ForbiddenException('Você só pode reverter suas próprias transações');
 
+        this.logger.log('Transação revertida com sucesso!!.');
+
         return this.prisma.$transaction(async (tx) => {
 
             const receiver = await tx.user.findUnique({ where: { id: transaction.receiverId } });
@@ -90,6 +98,9 @@ export class TransactionService {
     }
 
     async getUserTransactions(userId: string) {
+
+        this.logger.log('Transações carregadas com sucesso!!.');
+
         return this.prisma.transaction.findMany({
             where: {
                 OR: [{ senderId: userId }, { receiverId: userId }],
