@@ -13,9 +13,9 @@ describe('AuthService', () => {
     beforeEach(async () => {
         userService = {
             findByEmail: jest.fn().mockResolvedValue({
-                id: 'user-1',
-                email: 'test@example.com',
-                password: await argon2.hash('123456'),
+                id: '133db5d7-2d39-46c5-bd87-f0735178661',
+                email: 'manoel@gmail.com',
+                password: await argon2.hash('manoel12345'),
             }),
         };
 
@@ -36,8 +36,8 @@ describe('AuthService', () => {
 
     it('should validate and return token', async () => {
         const token = await service.login({
-            email: 'test@example.com',
-            password: '123456',
+            email: 'manoel@gmail.com',
+            password: 'manoel12345',
         });
 
         expect(token.access_token).toBe('mock-token');
