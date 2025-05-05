@@ -14,6 +14,8 @@ export class TransactionController {
     @Post()
     @ApiResponse({ status: 201, description: 'Transação registrada com sucesso!!.' })
     @ApiResponse({ status: 400, description: 'Você não pode transferir para si mesmo' })
+    @ApiResponse({ status: 403, description: 'Você não tem saldo suficiente' })
+    @ApiResponse({ status: 500, description: 'Erro interno no servidor' })
     @ApiBearerAuth()
     async transfer(@Req() req: Request & { user: { userId: string } }, @Body() dto: CreateTransactionDto) {
         const senderId = req.user.userId;
@@ -24,6 +26,7 @@ export class TransactionController {
     @ApiResponse({ status: 201, description: 'Transação revertida com sucesso!!.' })
     @ApiResponse({ status: 400, description: 'Operação já realizada' })
     @ApiResponse({ status: 403, description: 'Você só pode reverter suas próprias transações' })
+    @ApiResponse({ status: 500, description: 'Erro interno no servidor' })
     @ApiBearerAuth()
     async reverse(@Req() req: Request & { user: { userId: string } }, @Param('id') id: string) {
         return this.transactionService.reverseTransaction(id, req.user.userId);
