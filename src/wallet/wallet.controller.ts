@@ -1,11 +1,12 @@
 import { Controller, Post, Body, UseGuards, Request, Get, Req } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { AddBalanceDto } from './dtos/add-balance.dto';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { CreateWalletDto } from './dtos/create-wallet.dto';
 
 @Controller('wallets')
+@ApiTags('Wallets')
 @ApiResponse({ status: 201, description: 'Transação registrada com sucesso!!.' })
 @ApiResponse({ status: 400, description: 'Você não pode transferir para si mesmo' })
 @ApiResponse({ status: 403, description: 'Você não tem saldo suficiente' })
@@ -15,7 +16,6 @@ import { CreateWalletDto } from './dtos/create-wallet.dto';
 export class WalletController {
 
     constructor(private readonly walletService: WalletService) { }
-
 
     @Get()
     @ApiResponse({ status: 200, description: 'Carteiras carregadas com sucesso!!.' })

@@ -3,8 +3,8 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserService } from './user.service';
 import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('users')
 @Controller('users')
+@ApiTags('Users')
 @ApiBearerAuth()
 @UseGuards(JwtGuard)
 export class UserController {

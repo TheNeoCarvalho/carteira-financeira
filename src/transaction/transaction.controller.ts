@@ -5,8 +5,9 @@ import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
 import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('transactions')
 @Controller('transactions')
+@ApiTags('Transactions')
+@ApiBearerAuth()
 @UseGuards(JwtGuard)
 export class TransactionController {
     constructor(
@@ -18,7 +19,6 @@ export class TransactionController {
     @ApiResponse({ status: 400, description: 'Você não pode transferir para si mesmo' })
     @ApiResponse({ status: 403, description: 'Você não tem saldo suficiente' })
     @ApiResponse({ status: 500, description: 'Erro interno no servidor' })
-    @ApiBearerAuth()
     async transfer(@Req() req: Request & { user: { userId: string } }, @Body() dto: CreateTransactionDto) {
         const senderId = req.user.userId;
         return this.transactionService.transfer(senderId, dto);
@@ -29,7 +29,6 @@ export class TransactionController {
     @ApiResponse({ status: 400, description: 'Operação já realizada' })
     @ApiResponse({ status: 403, description: 'Você só pode reverter suas próprias transações' })
     @ApiResponse({ status: 500, description: 'Erro interno no servidor' })
-    @ApiBearerAuth()
     async reverse(@Req() req: Request & { user: { userId: string } }, @Param('id') id: string) {
         return this.transactionService.reverseTransaction(id, req.user.userId);
     }
@@ -38,7 +37,6 @@ export class TransactionController {
     @ApiResponse({ status: 200, description: 'Transações garregadas com sucesso!!.' })
     @ApiResponse({ status: 403, description: 'Você não tem permissão para acessar essas transações' })
     @ApiResponse({ status: 500, description: 'Erro interno no servidor' })
-    @ApiBearerAuth()
     async getUserTransactions(@Req() req: Request & { user: { userId: string } }) {
         return this.transactionService.getUserTransactions(req.user.userId);
     }

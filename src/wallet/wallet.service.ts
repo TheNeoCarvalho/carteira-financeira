@@ -32,7 +32,7 @@ export class WalletService {
     }
 
     async createWallet(createWalletDto: CreateWalletDto) {
-        const { userId, name } = createWalletDto;
+        const { userId, name, balance } = createWalletDto;
 
         this.logger.log('Carteira criada com sucesso!!.');
 
@@ -40,7 +40,7 @@ export class WalletService {
             data: {
                 userId,
                 name,
-                balance: 0,
+                balance: balance || 0,
             },
         });
     }
