@@ -27,7 +27,7 @@ export class WalletService {
 
         return await this.prisma.wallet.update({
             where: { id: dto.walletId },
-            data: { balance: dto.amount },
+            data: { balance: { increment: dto.amount } },
         });
     }
 
