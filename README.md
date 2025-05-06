@@ -1,6 +1,6 @@
 # Carteira Financeira
 
-API de Carteira Financeira desenvolvida em **NestJS** com **arquitetura hexagonal**, **TypeORM**, **PostgreSQL**, **JWT**, **Swagger** e testes automatizados.
+API de Carteira Financeira desenvolvida em **NestJS** com **Prisma**, **PostgreSQL**, **JWT**, **Swagger** e **testes automatizados**.
 
 ---
 
