@@ -90,5 +90,5 @@ docker exec -it api npm run test
 docker exec -it api npm run test:e2e
 ```
 
-### Documentação API e a documentção Online do Swagger
+### API e a documentção Online do Swagger
 Acesse: https://carteira-financeira.fly.dev/api/docs
