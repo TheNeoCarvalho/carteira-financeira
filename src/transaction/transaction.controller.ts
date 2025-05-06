@@ -34,6 +34,8 @@ export class TransactionController {
 
     @Get()
     @ApiResponse({ status: 200, description: 'Transações garregadas com sucesso!!.' })
+    @ApiResponse({ status: 403, description: 'Você não tem permissão para acessar essas transações' })
+    @ApiResponse({ status: 500, description: 'Erro interno no servidor' })
     @ApiBearerAuth()
     async getUserTransactions(@Req() req: Request & { user: { userId: string } }) {
         return this.transactionService.getUserTransactions(req.user.userId);

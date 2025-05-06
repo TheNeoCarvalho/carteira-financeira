@@ -11,7 +11,9 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @Get('me')
-    @ApiResponse({ status: 200, description: 'User logged in successfully.' })
+    @ApiResponse({ status: 200, description: 'Usuário logado com sucesso.' })
+    @ApiResponse({ status: 401, description: 'Unauthorized.' })
+    @ApiResponse({ status: 500, description: 'Erro interno no servidor.' })
     @ApiBearerAuth()
     async getProfile(@Req() req: any) {
         return this.userService.getProfile(req.user.userId);

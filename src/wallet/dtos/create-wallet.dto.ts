@@ -3,14 +3,14 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateWalletDto {
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ description: 'ID do usuário a ser adicionado' })
     userId: string;
 
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ description: 'Nome da carteira' })
     name: string;
 
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ description: 'Saldo inicial da carteira' })
     balance: number;
 }

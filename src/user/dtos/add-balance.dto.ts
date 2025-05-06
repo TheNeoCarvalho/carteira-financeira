@@ -12,5 +12,4 @@ export class AddBalanceToUserDto {
     @IsPositive()
     @ApiProperty({ description: 'O valor a ser adicionado' })
     amount: number;
-
 }

@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
-import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TransactionService {

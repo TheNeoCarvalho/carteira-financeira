@@ -8,6 +8,6 @@ export class GetBalanceDto {
     userId: string;
 
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ description: 'Valor da carteira' })
     balance: number;
 }

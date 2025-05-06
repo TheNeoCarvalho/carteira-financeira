@@ -10,14 +10,12 @@ async function main() {
                 name: "Manoel",
                 email: "manoel@gmail.com",
                 password: "manoel12345",
-                balance: 100
             },
             {
                 id: "b137fde0-a297-4b55-945a-a95a046f24cc",
                 name: "Manoel Carvalho",
                 email: "manoelcarvalho@gmail.com",
                 password: "manoel12345",
-                balance: 200
             },
         ],
     });
@@ -37,6 +35,23 @@ async function main() {
                 receiverId: "133db5d7-2d39-46c5-bd87-f0735178661",
                 amount: 30,
                 status: 'COMPLETED'
+            },
+        ],
+    });
+
+    await prisma.wallet.createMany({
+        data: [
+            {
+                id: '133db5d7-2d39-46c5-bd87-f0735178661',
+                name: 'Wallet 1',
+                userId: "133db5d7-2d39-46c5-bd87-f0735178661",
+                balance: 500
+            },
+            {
+                id: 'b137fde0-a297-4b55-945a-a95a046f24ca',
+                name: 'Wallet 2',
+                userId: "133db5d7-2d39-46c5-bd87-f0735178661",
+                balance: 300
             },
         ],
     });

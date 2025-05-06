@@ -23,13 +23,13 @@ describe('AuthController', () => {
     });
 
     it('should register a user', async () => {
-        const dto: RegisterDto = { name: 'Test User', email: 'test@example.com', password: '123456' };
+        const dto: RegisterDto = { name: 'Test User', email: 'rafael@mail.com', password: '12345678' };
         const result = await controller.register(dto);
         expect(result).toHaveProperty('id');
     });
 
     it('should login a user', async () => {
-        const dto: LoginDto = { email: 'test@example.com', password: '123456' };
+        const dto: LoginDto = { email: 'rafael@mail.com', password: '12345678' };
         const result = await controller.login(dto);
         expect(result.access_token).toBe('mock-token');
     });
