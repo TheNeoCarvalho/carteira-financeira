@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import * as argon2 from 'argon2';
-import { AddBalanceToUserDto } from './dtos/add-balance.dto';
 
 @Injectable()
 export class UserService {
@@ -40,12 +39,4 @@ export class UserService {
         const { password, ...rest } = user;
         return rest;
     }
-
-    async addBalance(dto: AddBalanceToUserDto) {
-        return this.prisma.user.update({
-            where: { id: dto.userId },
-            data: { balance: { increment: dto.value } },
-        });
-    }
-
 }

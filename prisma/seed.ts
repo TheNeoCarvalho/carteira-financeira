@@ -15,7 +15,7 @@ async function main() {
             {
                 id: "b137fde0-a297-4b55-945a-a95a046f24cc",
                 name: "Manoel Carvalho",
-                email: "manoelcarvalho",
+                email: "manoelcarvalho@gmail.com",
                 password: "manoel12345",
                 balance: 200
             },

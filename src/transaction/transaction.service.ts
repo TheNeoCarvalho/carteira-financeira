@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TransactionService {
@@ -20,30 +21,33 @@ export class TransactionService {
             throw new BadRequestException('Você não pode transferir para si mesmo');
         }
 
-        const sender = await this.prisma.user.findUnique({ where: { id: senderId } });
-        const receiver = await this.prisma.user.findUnique({ where: { id: dto.receiverId } });
+        const senderWallets = await this.prisma.wallet.findMany({ where: { userId: senderId } });
+        const receiverWallets = await this.prisma.wallet.findMany({ where: { userId: dto.receiverId } });
 
-        if (!sender || !receiver) {
-            throw new NotFoundException('Usuário não encontrado');
+        if (senderWallets.length === 0 || receiverWallets.length === 0) {
+            throw new NotFoundException('Wallet do usuário não encontrada');
         }
 
-        if (Number(sender.balance) < dto.amount) {
+        const senderWallet = senderWallets[0];
+        const receiverWallet = receiverWallets[0];
+
+        if (Number(senderWallet.balance) < dto.amount) {
             throw new ForbiddenException('Saldo insuficiente');
         }
 
-        this.logger.log('Transação registrada com sucesso!!.');
-
         return this.prisma.$transaction(async (tx) => {
 
-            await tx.user.update({
-                where: { id: senderId },
+            await tx.wallet.update({
+                where: { id: senderWallet.id },
                 data: { balance: { decrement: dto.amount } },
             });
 
-            await tx.user.update({
-                where: { id: dto.receiverId },
+            await tx.wallet.update({
+                where: { id: receiverWallet.id },
                 data: { balance: { increment: dto.amount } },
             });
+
+            this.logger.log('Transação registrada com sucesso!!.');
 
             return tx.transaction.create({
                 data: {
@@ -72,19 +76,28 @@ export class TransactionService {
 
         return this.prisma.$transaction(async (tx) => {
 
-            const receiver = await tx.user.findUnique({ where: { id: transaction.receiverId } });
-            if (!receiver || Number(receiver.balance) < Number(transaction.amount)) {
+            const receiverWallets = await tx.wallet.findMany({ where: { userId: transaction.receiverId } });
+            const senderWallets = await tx.wallet.findMany({ where: { userId: transaction.senderId } });
+
+            if (receiverWallets.length === 0 || senderWallets.length === 0) {
+                throw new NotFoundException('Wallet do usuário não encontrada');
+            }
+
+            const receiverWallet = receiverWallets[0];
+            const senderWallet = senderWallets[0];
+
+            if (Number(receiverWallet.balance) < Number(transaction.amount)) {
                 throw new ForbiddenException('Saldo insuficiente do destinatário para reverter');
             }
 
-            await tx.user.update({
-                where: { id: transaction.receiverId },
-                data: { balance: { decrement: transaction.amount } },
+            await tx.wallet.update({
+                where: { id: receiverWallet.id },
+                data: { balance: { decrement: Number(transaction.amount) } },
             });
 
-            await tx.user.update({
-                where: { id: transaction.senderId },
-                data: { balance: { increment: transaction.amount } },
+            await tx.wallet.update({
+                where: { id: senderWallet.id },
+                data: { balance: { increment: Number(transaction.amount) } },
             });
 
             return tx.transaction.update({
