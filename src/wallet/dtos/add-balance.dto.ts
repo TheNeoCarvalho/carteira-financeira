@@ -8,7 +8,7 @@ export class AddBalanceDto {
     walletId: string;
 
     @IsNotEmpty()
-    @IsPositive()
+    @IsPositive({ message: 'O valor deve ser positivo' })
     @ApiProperty({ description: 'O valor a ser adicionado' })
     amount: number;
 }

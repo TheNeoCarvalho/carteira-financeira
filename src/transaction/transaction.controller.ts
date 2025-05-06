@@ -9,7 +9,9 @@ import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 @Controller('transactions')
 @UseGuards(JwtGuard)
 export class TransactionController {
-    constructor(private readonly transactionService: TransactionService) { }
+    constructor(
+        private readonly transactionService: TransactionService
+    ) { }
 
     @Post()
     @ApiResponse({ status: 201, description: 'Transação registrada com sucesso!!.' })
@@ -22,7 +24,7 @@ export class TransactionController {
         return this.transactionService.transfer(senderId, dto);
     }
 
-    @Post(':id/reverse')
+    @Post(':id/revert')
     @ApiResponse({ status: 201, description: 'Transação revertida com sucesso!!.' })
     @ApiResponse({ status: 400, description: 'Operação já realizada' })
     @ApiResponse({ status: 403, description: 'Você só pode reverter suas próprias transações' })

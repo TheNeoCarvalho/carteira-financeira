@@ -8,6 +8,7 @@ export class GetBalanceDto {
     userId: string;
 
     @IsNotEmpty()
+    @IsPositive({ message: 'O valor deve ser positivo' })
     @ApiProperty({ description: 'Valor da carteira' })
     balance: number;
 }

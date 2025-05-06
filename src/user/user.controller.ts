@@ -5,6 +5,7 @@ import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
+@ApiBearerAuth()
 @UseGuards(JwtGuard)
 export class UserController {
 
@@ -14,7 +15,6 @@ export class UserController {
     @ApiResponse({ status: 200, description: 'Usuário logado com sucesso.' })
     @ApiResponse({ status: 401, description: 'Unauthorized.' })
     @ApiResponse({ status: 500, description: 'Erro interno no servidor.' })
-    @ApiBearerAuth()
     async getProfile(@Req() req: any) {
         return this.userService.getProfile(req.user.userId);
     }

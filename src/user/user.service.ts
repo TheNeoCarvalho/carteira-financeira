@@ -39,4 +39,5 @@ export class UserService {
         const { password, ...rest } = user;
         return rest;
     }
+
 }

@@ -66,17 +66,18 @@ Acesse: http://localhost:3000/api/docs
 
 ## Rotas Principais
 
-| Método | Rota                           | Descrição                              |
-|--------|--------------------------------|----------------------------------------|
-| GET    | /api                           | Health Check                            |
-| POST   | /api/auth/register             | Cadastra um novo usuário               |
-| POST   | /api/auth/login                | Realiza login e retorna token          |
-| GET    | /api/users/me                  | Consulta dados do usuário              |
-| POST   | /api/transactions              | Realiza uma transferência              |
+| Método | Rota                           | Descrição                                          |
+|--------|--------------------------------|----------------------------------------------------|
+| GET    | /api                           | Health Check                                       |
+| POST   | /api/auth/register             | Cadastra um novo usuário                           |
+| POST   | /api/auth/login                | Realiza login e retorna token                      |
+| GET    | /api/users/me                  | Consulta dados do usuário                          |
+| POST   | /api/transactions              | Realiza uma transferência                          |
 | GET    | /api/transactions              | Retorna todas as transferência do usuário          |
-| POST   | /api/transactions/:id/revert/  | Reverte uma transação realizada        |
-| POST   | /api/wallet                    | Cadastra uma carteira para o usuário   |
-| POST   | /api/wallet/add-balance        | Adiciona fundos uma carteira           |
+| POST   | /api/transactions/:id/revert/  | Reverte uma transação realizada                    |
+| GET    | /api/wallets                   | Retorna as carteira do usuário                     |
+| POST   | /api/wallets                   | Cadastra uma carteira para o usuário               |
+| POST   | /api/wallets/add-balance       | Adiciona fundos uma carteira                       |
 
 
 ## Testes
